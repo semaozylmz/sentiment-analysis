@@ -13,7 +13,7 @@ st.set_page_config(
 )
 
 # Custom CSS
-with open('/Users/sema/Documents/veri/sentiment_analysis/styles.css') as f:
+with open('/Users/sema/Documents/Repo/sentiment-analysis/sentiment-analysis/styles.css') as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 # Initialize sentiment analyzer
