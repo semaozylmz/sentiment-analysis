@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import plotly.express as px
 from model import SentimentAnalyzer
@@ -13,8 +14,12 @@ st.set_page_config(
 )
 
 # Custom CSS
-with open('/Users/sema/Documents/Repo/sentiment-analysis/sentiment-analysis/styles.css') as f:
-    st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+css_path = os.path.join(os.path.dirname(__file__), 'styles.css')
+if os.path.exists(css_path):
+    with open(css_path) as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+else:
+    st.error(f"CSS file not found at: {css_path}")
 
 # Initialize sentiment analyzer
 analyzer = SentimentAnalyzer()
