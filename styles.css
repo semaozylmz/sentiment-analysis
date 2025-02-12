@@ -1,0 +1,94 @@
+/* Main container styles */
+.stApp {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header styles */
+h1 {
+    color: #1E88E5;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Text area styles */
+.stTextArea > div > div > textarea {
+    border-radius: 10px;
+    border: 2px solid #e0e0e0;
+    padding: 10px;
+    font-size: 16px;
+}
+
+/* Button styles */
+.stButton > button {
+    width: 100%;
+    border-radius: 20px;
+    background-color: #1E88E5;
+    color: white;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.stButton > button:hover {
+    background-color: #1565C0;
+    transform: translateY(-2px);
+}
+
+/* Sentiment box styles */
+.sentiment-box {
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.sentiment-box.positive {
+    background-color: #E8F5E9;
+    border: 2px solid #4CAF50;
+}
+
+.sentiment-box.negative {
+    background-color: #FFEBEE;
+    border: 2px solid #F44336;
+}
+
+.sentiment-box h3 {
+    margin: 0;
+    color: #333;
+}
+
+.sentiment-box p {
+    margin: 10px 0 0 0;
+    font-size: 1.1rem;
+    color: #666;
+}
+
+/* Info box styles */
+.stAlert {
+    border-radius: 10px;
+    padding: 1rem;
+}
+
+/* Plotly chart styles */
+.js-plotly-plot {
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Responsive design */
+@media screen and (max-width: 768px) {
+    .sentiment-box {
+        margin: 10px 0;
+        padding: 15px;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    .stTextArea > div > div > textarea {
+        font-size: 14px;
+    }
+}
