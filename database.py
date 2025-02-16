@@ -66,3 +66,35 @@ def get_recent_analyses(limit: int = 5):
             .all()
     finally:
         db.close()
+
+def delete_sentiment_analysis(record_id: int):
+    """ID'ye göre bir duygu analizi kaydını sil"""
+    db = next(get_db())
+    try:
+        record_to_delete = db.query(SentimentRecord).filter(SentimentRecord.id == record_id).first()
+        if record_to_delete:
+            db.delete(record_to_delete)
+            db.commit()
+            print(f"Record {record_id} başarıyla silindi")
+        else:
+            print(f"ID {record_id} olan kayıt bulunamadı")
+    except Exception as e:
+        db.rollback()
+        raise e
+    finally:
+        db.close()
+
+def delete_low_confidence_records(threshold: float = 0.5):
+    """Belirli bir eşik değerden düşük güven skorlarına sahip duygu analizi kayıtlarını sil"""
+    db = next(get_db())
+    try:
+        low_confidence_records = db.query(SentimentRecord).filter(SentimentRecord.confidence < threshold).all()
+        for record in low_confidence_records:
+            db.delete(record)
+        db.commit()
+        print(f"Confidence değeri {threshold} altında olan {len(low_confidence_records)} kayıt silindi")
+    except Exception as e:
+        db.rollback()
+        raise e
+    finally:
+        db.close()

@@ -4,7 +4,7 @@ import plotly.express as px
 from model import SentimentAnalyzer
 from utils import preprocess_text, get_sample_texts
 import pandas as pd
-from database import save_sentiment_analysis, get_recent_analyses
+from database import save_sentiment_analysis, get_recent_analyses, delete_sentiment_analysis
 
 # Page configuration
 st.set_page_config(
@@ -14,12 +14,10 @@ st.set_page_config(
 )
 
 # Custom CSS
-css_path = os.path.join(os.path.dirname(__file__), 'styles.css')
+css_path = os.path.join(os.path.dirname(__file__), "styles.css")
 if os.path.exists(css_path):
     with open(css_path) as f:
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-else:
-    st.error(f"CSS file not found at: {css_path}")
 
 # Initialize sentiment analyzer
 analyzer = SentimentAnalyzer()
@@ -39,10 +37,17 @@ def main():
     st.sidebar.markdown("---")
     st.sidebar.header("Son Analizler")
     recent_analyses = get_recent_analyses(5)
+    if st.sidebar.button("Sayfayı Yenile"):
+        st.rerun()
+
     for analysis in recent_analyses:
         with st.sidebar.expander(f"{analysis.sentiment.title()} ({analysis.confidence:.2%})"):
             st.write(analysis.input_text[:100] + "..." if len(analysis.input_text) > 100 else analysis.input_text)
             st.caption(f"Tarih: {analysis.created_at.strftime('%Y-%m-%d %H:%M')}")
+            delete_key = f"delete_{analysis.id}"
+            if st.button("Sil", key=delete_key):
+                delete_sentiment_analysis(analysis.id)
+                st.rerun()
 
     # Main content
     col1, col2 = st.columns([2, 1])
@@ -85,22 +90,15 @@ def main():
                     st.markdown("### Analiz Sonucu")
 
                     # Sentiment indicator
-                    if sentiment == "positive":
-                        st.markdown(
-                            f'<div class="sentiment-box positive">'
-                            f'<h3>😊 Pozitif</h3>'
-                            f'<p>Güven: {probability:.2%}</p>'
-                            f'</div>',
-                            unsafe_allow_html=True
-                        )
-                    else:
-                        st.markdown(
-                            f'<div class="sentiment-box negative">'
-                            f'<h3>😔 Negatif</h3>'
-                            f'<p>Güven: {probability:.2%}</p>'
-                            f'</div>',
-                            unsafe_allow_html=True
-                        )
+                    sentiment_class = "positive" if sentiment == "positive" else "negative"
+                    sentiment_emoji = "😊" if sentiment == "positive" else "😔"
+                    st.markdown(
+                        f'<div class="sentiment-box {sentiment_class}">' 
+                        f'<h3>{sentiment_emoji} {sentiment.title()}</h3>'
+                        f'<p>Güven: {probability:.2%}</p>'
+                        f'</div>',
+                        unsafe_allow_html=True
+                    )
 
                     # Confidence visualization
                     fig = px.bar(

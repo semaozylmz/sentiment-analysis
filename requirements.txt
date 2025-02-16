@@ -1,6 +1,1 @@
-streamlit==1.18.0
-plotly==5.5.0
-scikit-learn==1.1.0
-sqlalchemy==1.4.39
-psycopg2==2.9.3
-python-dotenv==0.19.2
+psycopg2-binary
